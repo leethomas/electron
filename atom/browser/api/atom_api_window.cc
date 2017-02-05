@@ -1,7 +1,6 @@
 // Copyright (c) 2013 GitHub, Inc.
 // Use of this source code is governed by the MIT license that can be
 // found in the LICENSE file.
-
 #include "atom/browser/api/atom_api_window.h"
 #include "atom/common/native_mate_converters/value_converter.h"
 
@@ -811,6 +810,15 @@ std::vector<v8::Local<v8::Object>> Window::GetChildWindows() const {
   return child_windows_.Values(isolate());
 }
 
+std::vector<v8::Local<v8::Object>> Window::GetOrderedWindows() const {
+  std::vector<v8::Local<v8::Object>> windows = mate::TrackableObject<Window>::GetAll(isolate());
+  for (auto window: windows) {
+    NativeWindow* nativeWindow;
+    mate::Converter<NativeWindow*>::FromV8(isolate(), window, &nativeWindow);
+  }
+  return std::vector<v8::Local<v8::Object>>();
+}
+
 bool Window::IsModal() const {
   return window_->is_modal();
 }
@@ -893,6 +901,7 @@ void Window::BuildPrototype(v8::Isolate* isolate,
 #endif
       .SetMethod("getParentWindow", &Window::GetParentWindow)
       .SetMethod("getChildWindows", &Window::GetChildWindows)
+      .SetMethod("getOrderedWindows", &Window::GetOrderedWindows)
       .SetMethod("isModal", &Window::IsModal)
       .SetMethod("getNativeWindowHandle", &Window::GetNativeWindowHandle)
       .SetMethod("getBounds", &Window::GetBounds)
