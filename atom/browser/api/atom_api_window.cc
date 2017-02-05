@@ -524,6 +524,10 @@ void Window::SetAlwaysOnTop(bool top, mate::Arguments* args) {
   }
 }
 
+int Window::GetWindowLevel() const {
+  return window_->GetWindowLevel();
+}
+
 bool Window::IsAlwaysOnTop() {
   return window_->IsAlwaysOnTop();
 }
@@ -931,6 +935,7 @@ void Window::BuildPrototype(v8::Isolate* isolate,
       .SetMethod("isClosable", &Window::IsClosable)
       .SetMethod("setAlwaysOnTop", &Window::SetAlwaysOnTop)
       .SetMethod("isAlwaysOnTop", &Window::IsAlwaysOnTop)
+      .SetMethod("getWindowLevel", &Window::GetWindowLevel)
       .SetMethod("center", &Window::Center)
       .SetMethod("setPosition", &Window::SetPosition)
       .SetMethod("getPosition", &Window::GetPosition)

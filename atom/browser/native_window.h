@@ -122,6 +122,7 @@ class NativeWindow : public base::SupportsUserData,
                               const std::string& level = "floating",
                               int relativeLevel = 0,
                               std::string* error = nullptr) = 0;
+  virtual int GetWindowLevel() const = 0;
   virtual bool IsAlwaysOnTop() = 0;
   virtual void Center() = 0;
   virtual void SetTitle(const std::string& title) = 0;

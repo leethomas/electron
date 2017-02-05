@@ -1097,6 +1097,10 @@ bool NativeWindowMac::IsAlwaysOnTop() {
   return [window_ level] != NSNormalWindowLevel;
 }
 
+int NativeWindowMac::GetWindowLevel() const {
+  return [window_ level];
+}
+
 void NativeWindowMac::Center() {
   [window_ center];
 }

@@ -69,6 +69,7 @@ class NativeWindowMac : public NativeWindow,
   bool IsClosable() override;
   void SetAlwaysOnTop(bool top, const std::string& level,
                       int relativeLevel, std::string* error) override;
+  int GetWindowLevel() const override;
   bool IsAlwaysOnTop() override;
   void Center() override;
   void SetTitle(const std::string& title) override;
