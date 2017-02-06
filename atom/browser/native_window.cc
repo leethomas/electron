@@ -204,6 +204,11 @@ void NativeWindow::InitFromOptions(const mate::Dictionary& options) {
     Show();
 }
 
+bool NativeWindow::WindowLevelComparator(const NativeWindow* a,
+                                         const NativeWindow* b) {
+  return a->GetWindowLevel() < b->GetWindowLevel();
+}
+
 void NativeWindow::SetSize(const gfx::Size& size, bool animate) {
   SetBounds(gfx::Rect(GetPosition(), size), animate);
 }

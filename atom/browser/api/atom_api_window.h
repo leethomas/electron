@@ -48,6 +48,8 @@ class Window : public mate::TrackableObject<Window>,
   // Returns the BrowserWindow object from |native_window|.
   static v8::Local<v8::Value> From(v8::Isolate* isolate,
                                    NativeWindow* native_window);
+  static std::vector<v8::Local<v8::Object>> GetOrderedWindows(
+                                              v8::Isolate* isolate);
 
   NativeWindow* window() const { return window_.get(); }
 
@@ -176,7 +178,6 @@ class Window : public mate::TrackableObject<Window>,
   void SetParentWindow(v8::Local<v8::Value> value, mate::Arguments* args);
   v8::Local<v8::Value> GetParentWindow() const;
   std::vector<v8::Local<v8::Object>> GetChildWindows() const;
-  std::vector<v8::Local<v8::Object>> GetOrderedWindows() const;
   bool IsModal() const;
   v8::Local<v8::Value> GetNativeWindowHandle();
 

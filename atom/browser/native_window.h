@@ -64,6 +64,8 @@ class NativeWindow : public base::SupportsUserData,
   static NativeWindow* FromWebContents(content::WebContents* web_contents);
 
   void InitFromOptions(const mate::Dictionary& options);
+  static bool WindowLevelComparator(const NativeWindow* a,
+                                    const NativeWindow* b);
 
   virtual void Close() = 0;
   virtual void CloseImmediately() = 0;

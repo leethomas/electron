@@ -814,13 +814,28 @@ std::vector<v8::Local<v8::Object>> Window::GetChildWindows() const {
   return child_windows_.Values(isolate());
 }
 
-std::vector<v8::Local<v8::Object>> Window::GetOrderedWindows() const {
-  std::vector<v8::Local<v8::Object>> windows = mate::TrackableObject<Window>::GetAll(isolate());
-  for (auto window: windows) {
+std::vector<v8::Local<v8::Object>> Window::GetOrderedWindows(
+                                     v8::Isolate* isolate) {
+  std::vector<v8::Local<v8::Object>> windows =
+    mate::TrackableObject<Window>::GetAll(isolate);
+  std::vector<NativeWindow*> nativeWindows(windows.size());
+  std::unordered_map<NativeWindow*, v8::Local<v8::Object>> objectMap;
+
+  for (std::vector<int>::size_type i = 0; i < windows.size(); i++) {
     NativeWindow* nativeWindow;
-    mate::Converter<NativeWindow*>::FromV8(isolate(), window, &nativeWindow);
+    mate::Converter<NativeWindow*>::FromV8(isolate, windows[i], &nativeWindow);
+    objectMap.insert(std::make_pair(nativeWindow, windows[i]));
+    nativeWindows[i] = nativeWindow;
   }
-  return std::vector<v8::Local<v8::Object>>();
+
+  std::sort(nativeWindows.begin(), nativeWindows.end(),
+    &NativeWindow::WindowLevelComparator);
+
+  for (std::vector<int>::size_type i = 0; i < nativeWindows.size(); i++) {
+    windows[i] = objectMap[nativeWindows[i]];
+  }
+
+  return windows;
 }
 
 bool Window::IsModal() const {
@@ -905,7 +920,6 @@ void Window::BuildPrototype(v8::Isolate* isolate,
 #endif
       .SetMethod("getParentWindow", &Window::GetParentWindow)
       .SetMethod("getChildWindows", &Window::GetChildWindows)
-      .SetMethod("getOrderedWindows", &Window::GetOrderedWindows)
       .SetMethod("isModal", &Window::IsModal)
       .SetMethod("getNativeWindowHandle", &Window::GetNativeWindowHandle)
       .SetMethod("getBounds", &Window::GetBounds)
@@ -1020,6 +1034,7 @@ void Initialize(v8::Local<v8::Object> exports, v8::Local<v8::Value> unused,
                            &mate::TrackableObject<Window>::FromWeakMapID);
   browser_window.SetMethod("getAllWindows",
                            &mate::TrackableObject<Window>::GetAll);
+  browser_window.SetMethod("getOrderedWindows", &Window::GetOrderedWindows);
 
   mate::Dictionary dict(isolate, exports);
   dict.Set("BrowserWindow", browser_window);
