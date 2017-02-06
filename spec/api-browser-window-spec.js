@@ -280,6 +280,47 @@ describe('BrowserWindow module', function () {
     })
   })
 
+  describe('BrowserWindow.getAllWindows()', function () {
+    it('gets all existing windows', function () {
+      let w2 = new BrowserWindow()
+      let w3 = new BrowserWindow()
+      let windowIds = [w3.id, w2.id, w.id, 1].join(' ')
+      let result = BrowserWindow.getAllWindows()
+        .map((win) => { return win.id })
+        .join(' ')
+
+      w2.destroy()
+      w3.destroy()
+
+      assert.equal(result, windowIds)
+    })
+  })
+
+  describe('BrowserWindow.getOrderedWindows()', function () {
+    it('gets all windows in descending order by window level', function () {
+      let w2 = new BrowserWindow()
+      let w3 = new BrowserWindow()
+      let w4 = new BrowserWindow()
+      let id2 = w2.id
+      let id4 = w4.id
+
+      w2.setAlwaysOnTop(true)
+      w4.setAlwaysOnTop(true)
+
+
+      let orderedWindowIds = BrowserWindow.getOrderedWindows()
+        .map((win) => { return win.id })
+      let topSlice = [orderedWindowIds[0], orderedWindowIds[1]]
+      
+      w2.destroy()
+      w3.destroy()
+      w4.destroy()
+
+      assert(topSlice.includes(id2))
+      assert(topSlice.includes(id4))
+    })
+  })
+
   describe('will-navigate event', function () {
     it('allows the window to be closed from the event listener', (done) => {
       ipcRenderer.send('close-on-will-navigate', w.id)
