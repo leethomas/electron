@@ -105,6 +105,7 @@ class NativeWindowViews : public NativeWindow,
   void SetMenu(AtomMenuModel* menu_model) override;
   void SetParentWindow(NativeWindow* parent) override;
   gfx::NativeWindow GetNativeWindow() override;
+  int GetWindowLevel() const override;
   void SetOverlayIcon(const gfx::Image& overlay,
                       const std::string& description) override;
   void SetProgressBar(double progress, const ProgressState state) override;

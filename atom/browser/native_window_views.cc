@@ -691,6 +691,10 @@ bool NativeWindowViews::IsAlwaysOnTop() {
   return window_->IsAlwaysOnTop();
 }
 
+int NativeWindowViews::GetWindowLevel() {
+  return 0;
+}
+
 void NativeWindowViews::Center() {
   window_->CenterWindow(GetSize());
 }

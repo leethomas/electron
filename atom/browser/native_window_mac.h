@@ -89,6 +89,7 @@ class NativeWindowMac : public NativeWindow,
   void SetParentWindow(NativeWindow* parent) override;
   gfx::NativeWindow GetNativeWindow() override;
   gfx::AcceleratedWidget GetAcceleratedWidget() override;
+  int GetWindowLevel() const override;
   void SetProgressBar(double progress, const ProgressState state) override;
   void SetOverlayIcon(const gfx::Image& overlay,
                       const std::string& description) override;

@@ -174,6 +174,7 @@ class Window : public mate::TrackableObject<Window>,
   void CloseFilePreview();
   void SetParentWindow(v8::Local<v8::Value> value, mate::Arguments* args);
   v8::Local<v8::Value> GetParentWindow() const;
+  int GetWindowLevel() const;
   std::vector<v8::Local<v8::Object>> GetChildWindows() const;
   bool IsModal() const;
   v8::Local<v8::Value> GetNativeWindowHandle();

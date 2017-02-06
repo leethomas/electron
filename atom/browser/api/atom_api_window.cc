@@ -807,6 +807,10 @@ v8::Local<v8::Value> Window::GetParentWindow() const {
     return v8::Local<v8::Value>::New(isolate(), parent_window_);
 }
 
+int Window::GetWindowLevel() const {
+  return window_->GetWindowLevel();
+}
+
 std::vector<v8::Local<v8::Object>> Window::GetChildWindows() const {
   return child_windows_.Values(isolate());
 }
@@ -892,6 +896,7 @@ void Window::BuildPrototype(v8::Isolate* isolate,
       .SetMethod("setParentWindow", &Window::SetParentWindow)
 #endif
       .SetMethod("getParentWindow", &Window::GetParentWindow)
+      .SetMethod("getWindowLevel", &Window::GetWindowLevel)
       .SetMethod("getChildWindows", &Window::GetChildWindows)
       .SetMethod("isModal", &Window::IsModal)
       .SetMethod("getNativeWindowHandle", &Window::GetNativeWindowHandle)
